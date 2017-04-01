@@ -18,3 +18,20 @@ class TestStringComposition(unittest.TestCase):
 
     def test_sample_dataset(self):
         self._test('Datasets/StringComposition/sample.txt')
+
+
+class TestStringSpelledByAGnomePath(unittest.TestCase):
+    def _test(self, datafile_name):
+        with open(datafile_name, 'r') as datafile:
+            lines = datafile.readlines()
+            patterns = [line.strip() for line in lines[1:-2]]
+            expected_gnome_path = lines[-1].strip()
+
+        gnome_path = string_spelled_by_a_genome_path(patterns)
+        self.assertTrue(expected_gnome_path == gnome_path)
+
+    def test_extra_dataset(self):
+        self._test('Datasets/GnomePath/extra.txt')
+
+    def test_sample_dataset(self):
+        self._test('Datasets/GnomePath/sample.txt')

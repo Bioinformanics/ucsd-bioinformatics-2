@@ -1,0 +1,8 @@
+Sample Input:
+ACCGA
+CCGAA
+CGAAG
+GAAGC
+AAGCT
+Sample Output:
+ACCGAAGCT

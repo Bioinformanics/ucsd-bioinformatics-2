@@ -8,4 +8,14 @@ def string_composition_problem():
 
     print('\n'.join(string_composition(k, text)))
 
-string_composition_problem()
+
+def string_spelled_by_a_genome_path_problem():
+    with open('Datasets/GnomePath/quiz.txt', 'r') as datafile:
+        lines = datafile.readlines()
+        patterns = [line.strip() for line in lines]
+
+    print(string_spelled_by_a_genome_path(patterns))
+
+
+#string_composition_problem()
+string_spelled_by_a_genome_path_problem()
