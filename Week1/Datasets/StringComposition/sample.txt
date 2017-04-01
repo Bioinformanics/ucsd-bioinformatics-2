@@ -1,0 +1,9 @@
+Sample Input:
+5
+CAATCCAAC
+Sample Output:
+CAATC
+AATCC
+ATCCA
+TCCAA
+CCAAC
