@@ -15,3 +15,11 @@ def string_spelled_by_a_genome_path(patterns):
      Output: A string Text of length k+n-1 such that the i-th k-mer in Text is equal to Patterni  (for 1 ≤ i ≤ n).
     """
     return ''.join([pattern[0] for pattern in patterns]) + patterns[-1][1:]
+
+
+def construct_overlap_graph(patterns):
+    """
+    Overlap Graph Problem: Construct the overlap graph of a collection of k-mers.
+     Input: A collection Patterns of k-mers.
+     Output: The overlap graph Overlap(Patterns), in the form of an adjacency list. (You may return the edges in any order.)
+    """
