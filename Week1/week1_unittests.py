@@ -35,3 +35,29 @@ class TestStringSpelledByAGnomePath(unittest.TestCase):
 
     def test_sample_dataset(self):
         self._test('Datasets/GnomePath/sample.txt')
+
+class TestOverlapGraph(unittest.TestCase):
+    def _test(self, datafile_name):
+        with open(datafile_name, 'r') as datafile:
+            patterns = []
+            expected_outputs = []
+            current_data_set = None
+            while True:
+                line = datafile.readline().strip()
+                if not line:
+                    break
+                if line.__contains__("Input"):
+                    current_data_set = patterns
+                elif line.__contains__("Output"):
+                    current_data_set = expected_outputs
+                else:
+                    current_data_set.append(line)
+
+        outputs = construct_overlap_graph(patterns)
+        self.assertTrue(AreStringListsEqual(expected_outputs, outputs))
+
+    def test_extra_dataset(self):
+        self._test('Datasets/OverlapGraph/extra.txt')
+
+    def test_sample_dataset(self):
+        self._test('Datasets/OverlapGraph/sample.txt')

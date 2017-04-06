@@ -1,3 +1,5 @@
+from utilities import Node
+
 def string_composition(k, text):
     """
     String Composition Problem: Generate the k-mer composition of a string.
@@ -23,3 +25,8 @@ def construct_overlap_graph(patterns):
      Input: A collection Patterns of k-mers.
      Output: The overlap graph Overlap(Patterns), in the form of an adjacency list. (You may return the edges in any order.)
     """
+    matches = ([pattern1, pattern2] for i,pattern1 in enumerate(patterns) for j,pattern2 in enumerate(patterns)
+             if ((i != j) and pattern2.startswith(pattern1[1:])))
+    outputs = [match[0]+" -> "+match[1] for match in matches]
+    return outputs
+

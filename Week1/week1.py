@@ -17,5 +17,13 @@ def string_spelled_by_a_genome_path_problem():
     print(string_spelled_by_a_genome_path(patterns))
 
 
+def overlap_graph_problem():
+    with open('Datasets/OverlapGraph/quiz.txt', 'r') as datafile:
+        patterns = [line.strip() for line in datafile.readlines()]
+    outputs = construct_overlap_graph(patterns)
+
+    print('\n'.join(outputs))
+
 #string_composition_problem()
-string_spelled_by_a_genome_path_problem()
+#string_spelled_by_a_genome_path_problem()
+overlap_graph_problem()

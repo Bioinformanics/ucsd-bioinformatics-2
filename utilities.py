@@ -11,13 +11,19 @@ def AreStringListsEqual(list1, list2):
 
 
 class Node:
-    def __init__(self):
-        self.value = ""
+    def __init__(self, value):
+        self.value = value
         self.children = []
 
-class DAG:
+class DirectedGraph:
     """
     Directed Acyclic Graph
     """
     def __init__(self):
         self.roots = []
+
+    def add_node(self, node):
+        if not self.roots:
+            self.roots.append(node)
+            return
+
