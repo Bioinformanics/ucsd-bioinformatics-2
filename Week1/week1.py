@@ -24,6 +24,18 @@ def overlap_graph_problem():
 
     print('\n'.join(outputs))
 
+
+def de_Bruijn_graph_problem():
+    with open('Datasets/deBruijnGraph/quiz.txt', 'r') as datafile:
+        lines = datafile.readlines()
+        k = int(lines[0].strip())
+        text = lines[1].strip()
+    outputs = construct_de_Bruijn_graph(k, text)
+
+    print('\n'.join(outputs))
+
+
 #string_composition_problem()
 #string_spelled_by_a_genome_path_problem()
-overlap_graph_problem()
+#overlap_graph_problem()
+de_Bruijn_graph_problem()

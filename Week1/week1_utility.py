@@ -30,3 +30,22 @@ def construct_overlap_graph(patterns):
     outputs = [match[0]+" -> "+match[1] for match in matches]
     return outputs
 
+
+def construct_de_Bruijn_graph(k, text):
+    """
+    De Bruijn Graph from a String Problem: Construct the de Bruijn graph of a string.
+     Input: An integer k and a string Text.
+     Output: DeBruijnk(Text).
+    """
+    edges = [text[i:i+k] for i in range(len(text)-k+1)]
+    matches = {}
+    for edge in edges:
+        parent = edge[:-1]
+        child = edge[1:]
+        if matches.__contains__(parent):
+            matches[parent].insert(0, child)
+        else:
+            matches[parent] = [child]
+
+    outputs = [key+" -> "+','.join(matches[key]) for key in list(matches.keys())]
+    return outputs

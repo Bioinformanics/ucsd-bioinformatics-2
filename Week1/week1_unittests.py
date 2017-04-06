@@ -36,6 +36,7 @@ class TestStringSpelledByAGnomePath(unittest.TestCase):
     def test_sample_dataset(self):
         self._test('Datasets/GnomePath/sample.txt')
 
+
 class TestOverlapGraph(unittest.TestCase):
     def _test(self, datafile_name):
         with open(datafile_name, 'r') as datafile:
@@ -61,3 +62,21 @@ class TestOverlapGraph(unittest.TestCase):
 
     def test_sample_dataset(self):
         self._test('Datasets/OverlapGraph/sample.txt')
+
+
+class TestDeBruijnGraph(unittest.TestCase):
+    def _test(self, datafile_name):
+        with open(datafile_name, 'r') as datafile:
+            lines = datafile.readlines()
+            k = int(lines[1].strip())
+            text = lines[2].strip()
+            expected_outputs = [line.strip() for line in lines[4:]]
+
+        outputs = construct_de_Bruijn_graph(k, text)
+        self.assertTrue(AreStringListsEqual(expected_outputs, outputs))
+
+    def test_extra_dataset(self):
+        self._test('Datasets/deBruijnGraph/extra.txt')
+
+    def test_sample_dataset(self):
+        self._test('Datasets/deBruijnGraph/sample.txt')
