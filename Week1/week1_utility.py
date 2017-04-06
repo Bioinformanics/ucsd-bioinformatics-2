@@ -38,10 +38,13 @@ def construct_de_Bruijn_graph(k, text):
      Output: DeBruijnk(Text).
     """
     edges = [text[i:i+k] for i in range(len(text)-k+1)]
+    return construct_de_Bruijn_graph_from_kmers(edges)
+
+def construct_de_Bruijn_graph_from_kmers(kmers):
     matches = {}
-    for edge in edges:
-        parent = edge[:-1]
-        child = edge[1:]
+    for kmer in kmers:
+        parent = kmer[:-1]
+        child = kmer[1:]
         if matches.__contains__(parent):
             matches[parent].insert(0, child)
         else:

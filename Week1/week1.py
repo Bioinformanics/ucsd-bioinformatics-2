@@ -35,7 +35,16 @@ def de_Bruijn_graph_problem():
     print('\n'.join(outputs))
 
 
+def de_Bruijn_graph_from_kmer_problem():
+    with open('Datasets/deBruijnGraphFromKMer/quiz.txt', 'r') as datafile:
+        kmers = [line.strip() for line in datafile.readlines()]
+    outputs = construct_de_Bruijn_graph_from_kmers(kmers)
+
+    print('\n'.join(outputs))
+
+
 #string_composition_problem()
 #string_spelled_by_a_genome_path_problem()
 #overlap_graph_problem()
-de_Bruijn_graph_problem()
+#de_Bruijn_graph_problem()
+de_Bruijn_graph_from_kmer_problem()

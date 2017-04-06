@@ -80,3 +80,30 @@ class TestDeBruijnGraph(unittest.TestCase):
 
     def test_sample_dataset(self):
         self._test('Datasets/deBruijnGraph/sample.txt')
+
+
+class TestDeBruijnGraphFromKMer(unittest.TestCase):
+    def _test(self, datafile_name):
+        with open(datafile_name, 'r') as datafile:
+            kmers = []
+            expected_outputs = []
+            current_data_set = None
+            while True:
+                line = datafile.readline().strip()
+                if not line:
+                    break
+                if line.__contains__("Input"):
+                    current_data_set = kmers
+                elif line.__contains__("Output"):
+                    current_data_set = expected_outputs
+                else:
+                    current_data_set.append(line)
+
+        outputs = construct_de_Bruijn_graph_from_kmers(kmers)
+        self.assertTrue(AreStringListsEqual(expected_outputs, outputs))
+
+    def test_extra_dataset(self):
+        self._test('Datasets/deBruijnGraphFromKMer/extra.txt')
+
+    def test_sample_dataset(self):
+        self._test('Datasets/deBruijnGraphFromKMer/sample.txt')
