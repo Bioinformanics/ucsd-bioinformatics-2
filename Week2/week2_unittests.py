@@ -14,10 +14,15 @@ class TestEuleranCycle(unittest.TestCase):
             expected = lines[-1].strip()
 
         cycle = eulerian_cycle(graph)
-        self.assertTrue(cycle == expected)
+        result = '->'.join(cycle)
+        if result != expected:
+            print("Result:   " + result + "\n")
+            print("Expected: " + expected + "\n")
+        self.assertTrue(result == expected)
+
+    def test_sample_dataset(self):
+        self._test('Datasets/EuleranCycle/sample.txt')
 
     def test_extra_dataset(self):
         self._test('Datasets/EuleranCycle/extra.txt')
 
-    def test_sample_dataset(self):
-        self._test('Datasets/EuleranCycle/sample.txt')

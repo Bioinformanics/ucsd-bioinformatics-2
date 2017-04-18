@@ -28,9 +28,12 @@ def eulerian_cycle(graph):
             unvisited_edges.remove(edge)
             cycle.append(edge[1])
             found_match = True
+            source = edge[1]
+            break
         if not found_match:
             cycle = cycle[1:]
             cycle.append(cycle[0])
+            source = cycle[-1]
 
     return cycle
 
