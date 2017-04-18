@@ -1,7 +1,7 @@
 import unittest
 from Week2.week2_utility import *
 
-class TestEuleranCycle(unittest.TestCase):
+class TestEulerianCycle(unittest.TestCase):
     def _test(self, datafile_name):
         graph = []
         with open(datafile_name, 'r') as datafile:
@@ -21,10 +21,10 @@ class TestEuleranCycle(unittest.TestCase):
         self.assertTrue(result == expected)
 
     def test_sample_dataset(self):
-        self._test('Datasets/EuleranCycle/sample.txt')
+        self._test('Datasets/EulerianCycle/sample.txt')
 
     def test_extra_dataset(self):
-        self._test('Datasets/EuleranCycle/extra.txt')
+        self._test('Datasets/EulerianCycle/extra.txt')
 
 
 class TestEulerianPath(unittest.TestCase):

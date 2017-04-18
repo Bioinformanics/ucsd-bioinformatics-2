@@ -2,7 +2,7 @@ from Week2.week2_utility import *
 
 def eulerian_cycle_problem():
     graph = []
-    with open('Datasets/EuleranCycle/quiz.txt', 'r') as datafile:
+    with open('Datasets/EulerianCycle/quiz.txt', 'r') as datafile:
         for line in datafile.readlines():
             edge_map = line.strip().split(" -> ")
             source = edge_map[0]
