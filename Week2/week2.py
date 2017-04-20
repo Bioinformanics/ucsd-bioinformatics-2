@@ -24,5 +24,16 @@ def eulerian_path_problem():
     print("->".join(path))
 
 
+def string_reconstruction_problem():
+    graph = []
+    with open('Datasets/StringReconstruction/quiz.txt', 'r') as datafile:
+        lines = datafile.readlines()
+        k = int(lines[0].strip())
+        kmers = [line.strip() for line in lines[1:]]
+    result = string_reconstruction(k, kmers)
+    print(result)
+
+
 #eulerian_cycle_problem()
-eulerian_path_problem()
+#eulerian_path_problem()
+string_reconstruction_problem()

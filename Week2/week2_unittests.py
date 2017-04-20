@@ -52,3 +52,22 @@ class TestEulerianPath(unittest.TestCase):
     def test_extra_dataset(self):
         self._test('Datasets/EulerianPath/extra.txt')
 
+
+class TestStringReconstruction(unittest.TestCase):
+    def _test(self, datafile_name):
+        with open(datafile_name, 'r') as datafile:
+            lines = datafile.readlines()
+            k = int(lines[1].strip())
+            kmers = [line.strip() for line in lines[2:-2]]
+            expected = lines[-1].strip()
+        result = string_reconstruction(k, kmers)
+        if result != expected:
+            print("Result:   " + result + "\n")
+            print("Expected: " + expected + "\n")
+        self.assertTrue(result == expected)
+
+    def test_sample_dataset(self):
+        self._test('Datasets/StringReconstruction/sample.txt')
+
+    def test_extra_dataset(self):
+        self._test('Datasets/StringReconstruction/extra.txt')

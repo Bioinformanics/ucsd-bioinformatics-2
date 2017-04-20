@@ -1,4 +1,5 @@
 import itertools
+from Week1.week1_utility import string_spelled_by_a_genome_path
 
 
 """
@@ -82,3 +83,15 @@ def _find_eulerian_cycle(start, unvisited_edges):
     return cycle
 
 
+def string_reconstruction(k, kmers):
+    graph_dict = {}
+    for kmer in kmers:
+        source = kmer[:-1]
+        target = kmer[1:]
+        if source in graph_dict:
+            graph_dict[source].append(target)
+        else:
+            graph_dict[source] = [target]
+    graph = [[source, targets] for source,targets in graph_dict.items()]
+    path = eulerian_path(graph)
+    return string_spelled_by_a_genome_path(path)
