@@ -25,7 +25,6 @@ def eulerian_path_problem():
 
 
 def string_reconstruction_problem():
-    graph = []
     with open('Datasets/StringReconstruction/quiz.txt', 'r') as datafile:
         lines = datafile.readlines()
         k = int(lines[0].strip())
@@ -34,6 +33,10 @@ def string_reconstruction_problem():
     print(result)
 
 
+def k_universal_string_problem():
+    print(k_universal_string(4))
+
 #eulerian_cycle_problem()
 #eulerian_path_problem()
-string_reconstruction_problem()
+#string_reconstruction_problem()
+k_universal_string_problem()

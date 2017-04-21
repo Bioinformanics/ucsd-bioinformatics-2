@@ -71,3 +71,4 @@ class TestStringReconstruction(unittest.TestCase):
 
     def test_extra_dataset(self):
         self._test('Datasets/StringReconstruction/extra.txt')
+

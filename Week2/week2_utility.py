@@ -95,3 +95,18 @@ def string_reconstruction(k, kmers):
     graph = [[source, targets] for source,targets in graph_dict.items()]
     path = eulerian_path(graph)
     return string_spelled_by_a_genome_path(path)
+
+
+def k_universal_string(k):
+    sources = [format(val, "0"+str(k)+"b") for val in range(2**k)]
+    graph_dict = {}
+    for kmer in sources:
+        source = kmer[:-1]
+        target = kmer[1:]
+        if source in graph_dict:
+            graph_dict[source].append(target)
+        else:
+            graph_dict[source] = [target]
+    graph = [[source, targets] for source,targets in graph_dict.items()]
+    cycle = eulerian_cycle(graph)
+    return string_spelled_by_a_genome_path(cycle[:-1])
