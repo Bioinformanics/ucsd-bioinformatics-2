@@ -39,4 +39,27 @@ def k_universal_string_problem():
 #eulerian_cycle_problem()
 #eulerian_path_problem()
 #string_reconstruction_problem()
-k_universal_string_problem()
+#k_universal_string_problem()
+
+
+def quiz1():
+    with open ('Datasets/quiz1.txt', 'r') as datafile:
+        lines = [line.strip() for line in datafile.readlines() if line.strip()]
+    print ("Quiz 1: " + string_reconstruction(len(lines[0]), lines))
+
+"""
+def quiz3():
+    with open ('Datasets/quiz3.txt', 'r') as datafile:
+        edges = [line.strip()[1:-1].split("|") for line in datafile.readlines() if line.strip()]
+    graph_map = {}
+    for edge in edges:
+        if edge[0] in graph_map:
+            graph_map[edge[0]].append(edge[1])
+        else:
+            graph_map[edge[0]] = [edge[1]]
+    graph = [[source, targets] for source, targets in graph_map.items()]
+
+    print("Quiz 3: " + eulerian_cycle(graph))
+"""
+quiz1()
+#quiz3()
