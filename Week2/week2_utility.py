@@ -109,4 +109,4 @@ def k_universal_string(k):
             graph_dict[source] = [target]
     graph = [[source, targets] for source,targets in graph_dict.items()]
     cycle = eulerian_cycle(graph)
-    return string_spelled_by_a_genome_path(cycle[:-1])
+    return ''.join(c[0] for c in cycle[:-1])

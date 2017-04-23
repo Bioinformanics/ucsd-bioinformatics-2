@@ -34,7 +34,7 @@ def string_reconstruction_problem():
 
 
 def k_universal_string_problem():
-    print(k_universal_string(4))
+    print(k_universal_string(9))
 
 #eulerian_cycle_problem()
 #eulerian_path_problem()
