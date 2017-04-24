@@ -22,7 +22,6 @@ def eulerian_cycle(graph):
 
 def eulerian_path(graph):
     unvisited_edges = {}
-    path = []
 
     # build initial unvisited edges, which has all edges from graph
     for edge_map in graph:
@@ -110,3 +109,43 @@ def k_universal_string(k):
     graph = [[source, targets] for source,targets in graph_dict.items()]
     cycle = eulerian_cycle(graph)
     return ''.join(c[0] for c in cycle[:-1])
+
+
+def string_reconstruction_from_string_pairs(k, d, pairs):
+    edges = {}
+    # build initial unvisited edges, which has all edges from graph
+    for pair in pairs:
+        prefix = _get_pair_prefix(pair, k)
+        suffix = _get_pair_suffix(pair, k)
+        if prefix in edges:
+            edges[prefix].append(suffix)
+        else:
+            edges[prefix] = [suffix]
+    graph = [[source, targets] for source, targets in edges.items()]
+
+    path = eulerian_path(graph)
+    first = string_spelled_by_a_genome_path([s[0:k-1] for s in path])
+    second = string_spelled_by_a_genome_path([s[k:k+k-1] for s in path])
+    return first + second[-k-d:]
+
+
+def _get_pair_prefix(pair, k):
+    return pair[:k-1] + pair[k:k+k-1]
+
+
+def _get_pair_suffix(pair, k):
+    return pair[1:k] + pair[k+1:k+k]
+
+"""
+    StringSpelledByGappedPatterns(GappedPatterns, k, d)
+        FirstPatterns ← the sequence of initial k-mers from GappedPatterns
+        SecondPatterns ← the sequence of terminal k-mers from GappedPatterns
+        PrefixString ← StringSpelledByGappedPatterns(FirstPatterns, k)
+        SuffixString ← StringSpelledByGappedPatterns(SecondPatterns, k)
+        for i = k + d + 1 to |PrefixString|
+            if the i-th symbol in PrefixString does not equal the (i - k - d)-th symbol in SuffixString
+                return "there is no string spelled by the gapped patterns"
+        return PrefixString concatenated with the last k + d symbols of SuffixString
+"""
+def string_spelled_by_gapped_pattern(k, d, pairs):
+    pass

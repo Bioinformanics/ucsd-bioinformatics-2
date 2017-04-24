@@ -36,10 +36,22 @@ def string_reconstruction_problem():
 def k_universal_string_problem():
     print(k_universal_string(9))
 
+
+def string_reconstruction_from_string_pairs_problem():
+    with open ('Datasets/StringReconstructionFromStringPairs/quiz.txt') as datafile:
+        lines = datafile.readlines()
+        args = lines[0].strip().split(" ")
+        k = int(args[0])
+        d = int(args[1])
+        pairs = [pair[0:k] + pair[k+1:k+k+1] for pair in lines[1:]]
+    result = string_reconstruction_from_string_pairs(k, d, pairs)
+    print(result)
+
 #eulerian_cycle_problem()
 #eulerian_path_problem()
 #string_reconstruction_problem()
 #k_universal_string_problem()
+string_reconstruction_from_string_pairs_problem()
 
 
 def quiz1():
@@ -61,5 +73,6 @@ def quiz3():
 
     print("Quiz 3: " + eulerian_cycle(graph))
 """
-quiz1()
+
+#quiz1()
 #quiz3()
