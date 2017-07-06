@@ -43,8 +43,8 @@ def de_Bruijn_graph_from_kmer_problem():
     print('\n'.join(outputs))
 
 
-#string_composition_problem()
-#string_spelled_by_a_genome_path_problem()
-#overlap_graph_problem()
-#de_Bruijn_graph_problem()
-de_Bruijn_graph_from_kmer_problem()
+# string_composition_problem()
+# string_spelled_by_a_genome_path_problem()
+# overlap_graph_problem()
+# de_Bruijn_graph_problem()
+# de_Bruijn_graph_from_kmer_problem()

@@ -1,5 +1,6 @@
 from Week2.week2_utility import *
 
+
 def eulerian_cycle_problem():
     graph = []
     with open('Datasets/EulerianCycle/quiz.txt', 'r') as datafile:
@@ -34,39 +35,41 @@ def string_reconstruction_problem():
 
 
 def k_universal_string_problem():
-    print(k_universal_string(9))
+    print(k_universal_string(4))
 
 
 def string_reconstruction_from_string_pairs_problem():
-    with open ('Datasets/StringReconstructionFromStringPairs/quiz.txt') as datafile:
+    with open('Datasets/StringReconstructionFromStringPairs/quiz.txt') as datafile:
         lines = datafile.readlines()
         args = lines[0].strip().split(" ")
         k = int(args[0])
         d = int(args[1])
-        pairs = [pair[0:k] + pair[k+1:k+k+1] for pair in lines[1:]]
+        pairs = [pair[0:k] + pair[k + 1:k + k + 1] for pair in lines[1:]]
     result = string_reconstruction_from_string_pairs(k, d, pairs)
     print(result)
 
-#eulerian_cycle_problem()
-#eulerian_path_problem()
-#string_reconstruction_problem()
-#k_universal_string_problem()
-#string_reconstruction_from_string_pairs_problem()
+
+# eulerian_cycle_problem()
+# eulerian_path_problem()
+# string_reconstruction_problem()
+# k_universal_string_problem()
+# string_reconstruction_from_string_pairs_problem()
 
 
 def quiz1():
-    with open ('Datasets/quiz1.txt', 'r') as datafile:
+    with open('Datasets/quiz1.txt', 'r') as datafile:
         lines = [line.strip() for line in datafile.readlines() if line.strip()]
-    print ("Quiz 1: " + string_reconstruction(len(lines[0]), lines))
+    print("Quiz 1: " + string_reconstruction(len(lines[0]), lines))
 
 
 def quiz3():
-    with open ('Datasets/quiz3.txt', 'r') as datafile:
+    with open('Datasets/quiz3.txt', 'r') as datafile:
         edges = [line.strip()[1:-1].split("|") for line in datafile.readlines() if line.strip()]
-    graph = [edge[0]+edge[1] for edge in edges]
+    graph = [edge[0] + edge[1] for edge in edges]
 
-    print("Quiz 3: " + string_reconstruction_from_string_pairs(3,1,graph))
+    print("Quiz 3: " + string_reconstruction_from_string_pairs(3, 1, graph))
 
 
-quiz1()
-quiz3()
+# quiz1()
+# quiz3()
+print(k_universal_string(4))

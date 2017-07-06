@@ -1,0 +1,15 @@
+{
+    "python.unitTest.pyTestArgs": [
+        "Week1"
+    ],
+    "python.unitTest.pyTestEnabled": false,
+    "python.unitTest.unittestEnabled": true,
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "*test.py"
+    ]
+}

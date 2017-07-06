@@ -54,6 +54,42 @@ def eulerian_path(graph):
         unvisited_edges[end] = [start]
 
     cycle = _find_eulerian_cycle(start, unvisited_edges)
+
+    positions = [index for index in range(len(cycle)-1) if (cycle[index] == end and cycle[index+1] == start)]
+    position = positions[0]
+    path = cycle[position+1:] + cycle[1:position+1]
+    return path
+
+
+def eulerian_path_2(graph):
+    # build initial unvisited edges, which has all edges from graph
+    unvisited_edges = {}
+    for edge_map in graph:
+        unvisited_edges[edge_map[0]] = list(edge_map[1])
+
+    # find start and end of path, which should be unique as per Euler's Theorem
+    get_parent_node_count = lambda node: len(unvisited_edges[node]) if node in unvisited_edges else 0
+    child_nodes = [node for value in unvisited_edges.values() for node in value]
+    all_nodes = set(list(unvisited_edges.keys()) + child_nodes)
+    starts = [node for node in all_nodes if get_parent_node_count(node) < child_nodes.count(node)]
+    if (len(starts) != 1):
+        raise Exception("Cannot find a unique start node")
+    start = starts[0]
+    ends = [node for node in all_nodes if get_parent_node_count(node) > child_nodes.count(node)]
+    if (len(ends) != 1):
+        raise Exception("Cannot find a unique end node")
+    end = ends[0]
+
+    # temporarily add an edge "end -> start" to form a Eulerian graph
+    if end in unvisited_edges:
+        unvisited_edges[end].append(start)
+    else:
+        unvisited_edges[end] = [start]
+
+    # find Eulerian cycle
+    cycle = _find_eulerian_cycle(start, unvisited_edges)
+
+    # find Eulerian path
     positions = [index for index in range(len(cycle)-1) if (cycle[index] == end and cycle[index+1] == start)]
     position = positions[0]
     path = cycle[position+1:] + cycle[1:position+1]
@@ -64,9 +100,8 @@ def _find_eulerian_cycle(start, unvisited_edges):
     cycle = [start]
     while unvisited_edges:
         found_match = False
-        for s, targets in unvisited_edges.items():
-            if s != start:
-                continue
+        if start in unvisited_edges:
+            targets = unvisited_edges[start]
             t = targets[0]
             targets.remove(t)
             if not targets:
@@ -74,8 +109,11 @@ def _find_eulerian_cycle(start, unvisited_edges):
             cycle.append(t)
             found_match = True
             start = t
-            break
         if not found_match:
+            #new_start = next(node for node in unvisited_edges.keys() if node in cycle)
+            #position = cycle.index(new_start)
+            #cycle = cycle[position:] + cycle[1:position-1] + [cycle[position]]
+            #start = new_start
             cycle = cycle[1:]
             cycle.append(cycle[0])
             start = cycle[-1]
@@ -108,7 +146,7 @@ def k_universal_string(k):
             graph_dict[source] = [target]
     graph = [[source, targets] for source,targets in graph_dict.items()]
     cycle = eulerian_cycle(graph)
-    return ''.join(c[0] for c in cycle[:-1])
+    return ''.join(c[0] for c in cycle) + cycle[-1][1:]
 
 
 def string_reconstruction_from_string_pairs(k, d, pairs):
