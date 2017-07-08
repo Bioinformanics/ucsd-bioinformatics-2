@@ -1,13 +1,17 @@
-def AreStringListsEqual(list1, list2):
-    if len(list1) != len(list2):
+def AreStringListsEqual(expected, result):
+    if len(expected) != len(result):
+        _print_list_difference(expected, result)
         return False
-    for val in list1:
-        if val not in list2:
-            return False
-    for val in list2:
-        if val not in list1:
+    for val in expected:
+        if (val not in result) or expected.count(val) != result.count(val):
+            _print_list_difference(expected, result)
             return False
     return True
+
+
+def _print_list_difference(expected, result):
+    print("Expected: " + str(len(expected)) + ", " + ' '.join(expected) + "\n")
+    print("Result:   " + str(len(result)) + ", " + ' '.join(result) + "\n")
 
 
 class Node:

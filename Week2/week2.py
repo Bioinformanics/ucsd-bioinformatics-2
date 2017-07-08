@@ -35,7 +35,7 @@ def string_reconstruction_problem():
 
 
 def k_universal_string_problem():
-    print(k_universal_string(4))
+    print(k_universal_string(9))
 
 
 def string_reconstruction_from_string_pairs_problem():
@@ -49,11 +49,20 @@ def string_reconstruction_from_string_pairs_problem():
     print(result)
 
 
+def contig_generation_problem():
+    with open ('Datasets/ContigGeneration/quiz.txt') as datafile:
+        kmers = [line.strip() for line in datafile.readlines()]
+    contigs = generate_contigs(kmers)
+    print(' '.join([str(len(contig)) for contig in contigs]))
+    print('\n'.join(contigs))
+    print(len(contigs))
+
 # eulerian_cycle_problem()
 # eulerian_path_problem()
 # string_reconstruction_problem()
 # k_universal_string_problem()
 # string_reconstruction_from_string_pairs_problem()
+# contig_generation_problem()
 
 
 def quiz1():
@@ -70,6 +79,5 @@ def quiz3():
     print("Quiz 3: " + string_reconstruction_from_string_pairs(3, 1, graph))
 
 
-# quiz1()
-# quiz3()
-print(k_universal_string(4))
+quiz1()
+quiz3()

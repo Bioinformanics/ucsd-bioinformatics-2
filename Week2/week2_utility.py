@@ -121,6 +121,13 @@ def _find_eulerian_cycle(start, unvisited_edges):
 
 
 def string_reconstruction(k, kmers):
+    graph_dict = _generate_graph_dict_from_kmers(kmers)
+    graph = [[source, targets] for source,targets in graph_dict.items()]
+    path = eulerian_path(graph)
+    return string_spelled_by_a_genome_path(path)
+
+
+def _generate_graph_dict_from_kmers(kmers):
     graph_dict = {}
     for kmer in kmers:
         source = kmer[:-1]
@@ -129,9 +136,7 @@ def string_reconstruction(k, kmers):
             graph_dict[source].append(target)
         else:
             graph_dict[source] = [target]
-    graph = [[source, targets] for source,targets in graph_dict.items()]
-    path = eulerian_path(graph)
-    return string_spelled_by_a_genome_path(path)
+    return graph_dict
 
 
 def k_universal_string(k):
@@ -187,3 +192,57 @@ def _get_pair_suffix(pair, k):
 """
 def string_spelled_by_gapped_pattern(k, d, pairs):
     pass
+
+
+"""
+    Contig Generation Problem: Generate the contigs from a collection of reads (with imperfect coverage).
+         Input: A collection of k-mers Patterns. 
+         Output: All contigs in DeBruijn(Patterns).
+"""
+def generate_contigs(kmers):
+    # generate dictionary, {begin_node, [begin_node_occurrence, [end_node_1, contig_1], ...]}
+    graph_dict = {}
+    k = len(kmers[0])
+    for kmer in kmers:
+        source = kmer[:-1]
+        target = kmer[1:]
+        if source in graph_dict:
+            graph_dict[source].append([target, kmer])
+        else:
+            graph_dict[source] = [0, [target, kmer]]
+        if target in graph_dict:
+            graph_dict[target][0] += 1
+        else:
+            graph_dict[target] = [1]
+
+    # generate contigs
+    terminate = False
+    while not terminate:
+        terminate = True
+        for key, values in graph_dict.items():
+            for i, value in enumerate(values[1:]):
+                if value[0] not in graph_dict:
+                    continue
+                target = graph_dict[value[0]]
+                occurrence = target[0]
+                if occurrence == 0:
+                    continue
+                if occurrence == 1 and len(target)==2: # non-branching condition
+                    # merge
+                    values.pop(i+1)
+                    for j, target_value in enumerate(target[1:]):
+                        values.append([target_value[0], value[1]+target_value[1][k-1:]])
+                        target.pop(1)
+                    terminate = False
+                    break
+            if not terminate:
+                break
+
+    # return contigs
+    contigs = []
+    for key in graph_dict.keys():
+        values = graph_dict[key][1:]
+        for value in values:
+            contigs.append(value[1])
+    contigs.sort()
+    return contigs

@@ -1,5 +1,7 @@
 import unittest
 from Week2.week2_utility import *
+from utilities import AreStringListsEqual
+
 
 class TestEulerianCycle(unittest.TestCase):
     def _test(self, datafile_name):
@@ -93,3 +95,23 @@ class TestStringReconstructionFromStringPairs(unittest.TestCase):
 
     def test_extra_dataset(self):
         self._test('Datasets/StringReconstructionFromStringPairs/extra.txt')
+
+
+class TestContigGeneration(unittest.TestCase):
+    def _test(self, datafile_name):
+        with open(datafile_name, 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+        index_of_output_start = lines.index("Output:")
+        kmers = lines[1:index_of_output_start]
+        expected = lines[index_of_output_start+1:]
+        result = generate_contigs(kmers)
+        self.assertTrue(AreStringListsEqual(expected, result))
+
+    def test_sample_dataset(self):
+        self._test('Datasets/ContigGeneration/sample.txt')
+
+    def test_sample_dataset_2(self):
+        self._test('Datasets/ContigGeneration/sample2.txt')
+
+    def test_extra_dataset(self):
+        self._test('Datasets/ContigGeneration/extra.txt')
