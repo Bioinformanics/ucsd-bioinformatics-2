@@ -1,0 +1,36 @@
+import unittest
+from Week3.week3_utility import *
+from utilities import AreStringListsEqual
+
+class TestTranslateProtein(unittest.TestCase):
+
+    def test_sample_dataset(self):
+        expected = 'MAMAPRTEINSTRING'
+        actual = translate_protein('AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA')
+        self.assertEqual(expected, actual)
+
+    def test_extra_dataset(self):
+        with open('DataSets\ProteinTranslation\extra.txt', 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+            rna = lines[1]
+            expected = lines[3]
+        actual = translate_protein(rna)
+        self.assertEqual(expected, actual)
+
+
+class TestPeptideEncoding(unittest.TestCase):
+
+    def _test(self, data_file_path):
+        with open(data_file_path, 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+            dna = lines[1]
+            peptide = lines[2]
+            expected = lines[4:]
+        actual = find_peptide_encoding(dna, peptide)
+        self.assertTrue(AreStringListsEqual(expected, actual))
+
+    def test_sample_dataset(self):
+        self._test('DataSets\PeptideEncoding\sample.txt')
+
+    def test_extra_dataset(self):
+        self._test('DataSets\PeptideEncoding\extra.txt')

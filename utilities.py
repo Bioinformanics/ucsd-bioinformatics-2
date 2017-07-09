@@ -19,15 +19,26 @@ class Node:
         self.value = value
         self.children = []
 
-class DirectedGraph:
-    """
-    Directed Acyclic Graph
-    """
-    def __init__(self):
-        self.roots = []
 
-    def add_node(self, node):
-        if not self.roots:
-            self.roots.append(node)
-            return
+def get_reverse_complement(dna):
+    dna = str.upper(dna)
+    complement = ''
+    for base in dna:
+        if base == 'A':
+            complement += 'T'
+        elif base == 'T':
+            complement += 'A'
+        elif base == 'C':
+            complement += 'G'
+        elif base == 'G':
+            complement += 'C'
+        else:
+            raise Exception('Invalid DNA base.')
+    return complement[::-1]
 
+
+def transcribe_dna(dna):
+    return dna.replace('T', 'U')
+
+def reverse_transcribe_rna(rna):
+    return rna.replace('U', 'T')
