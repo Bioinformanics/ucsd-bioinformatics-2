@@ -1,4 +1,5 @@
 from Week3.week3_utility import *
+from Week3.week3_utility import _get_amino_acid_mass_table
 
 
 def protein_translation_problem():
@@ -14,12 +15,12 @@ def peptide_encoding_problem():
     print('\n'.join(find_peptide_encoding(dna, peptide)))
 
 
-"""
-    Exercise Break: Solve the Peptide Encoding Problem for Bacillus brevis and Tyrocidine B1 
-    (Val-Lys-Leu-Phe-Pro-Trp-Phe-Asn-Gln-Tyr). 
-    How many starting positions in Bacillus brevis encode this peptide?
-"""
-def Tyrocidine_B1_encoding_in_Bacillus_brevis():
+def theoretical_spectrum_problem():
+    with open('DataSets\TheoreticalSpectrum\quiz.txt', 'r') as datafile:
+        peptide = datafile.readline().strip()
+    print(' '.join([str(entry[1]) for entry in cyclospectrum(peptide)]))
+
 
 # protein_translation_problem()
 # peptide_encoding_problem()
+theoretical_spectrum_problem()

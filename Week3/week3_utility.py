@@ -49,3 +49,34 @@ def find_peptide_encoding(dna, peptide):
     return results
 
 
+"""
+    Generating Theoretical Spectrum Problem: Generate the theoretical spectrum of a cyclic peptide.
+     Input: An amino acid string Peptide.
+     Output: Cyclospectrum(Peptide).
+"""
+def cyclospectrum(peptide):
+    sub_peptides = [['',0]]
+    for l in range(len(peptide))[1:]:
+        for pos in range(len(peptide)):
+            sub_peptide = peptide[pos:pos+l] if pos+l<=len(peptide) else peptide[pos:]+peptide[:pos+l-len(peptide)]
+            sub_peptides.append([sub_peptide,0])
+    if (peptide):
+        sub_peptides.append([peptide,0])
+
+    amino_acid_mass_table = _get_amino_acid_mass_table()
+    for entry in sub_peptides:
+        mass = 0
+        sub_peptide = entry[0]
+        for pos in range(len(sub_peptide)):
+            mass += amino_acid_mass_table[sub_peptide[pos]]
+        entry[1] = mass
+    return sorted(sub_peptides, key=lambda entry: entry[1])
+
+
+def _get_amino_acid_mass_table():
+    with open('amino_acid_mass_table.txt') as datafile:
+        lines = [line.strip().split(' ') for line in datafile.readlines()]
+    aas, masses = zip(*lines)
+    masses = [int(mass) for mass in masses]
+    return dict(zip(aas, masses))
+
