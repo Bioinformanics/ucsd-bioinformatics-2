@@ -27,4 +27,6 @@ def count_peptide_with_given_mass_problem():
 # protein_translation_problem()
 # peptide_encoding_problem()
 # theoretical_spectrum_problem()
-count_peptide_with_given_mass_problem()
+# count_peptide_with_given_mass_problem()
+
+print(cyclopeptide_sequencing("0 113 128 186 241 299 314 427"))

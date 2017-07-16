@@ -1,5 +1,7 @@
 from utilities import *
 
+AMINO_ACID_MASSES = [57,71,87,97,99,101,103,113,114,115,128,129,131,137,147,156,163,186]
+
 """
 Protein Translation Problem: Translate an RNA string into an amino acid string.
      Input: An RNA string Pattern and the array GeneticCode.
@@ -55,6 +57,11 @@ def find_peptide_encoding(dna, peptide):
      Output: Cyclospectrum(Peptide).
 """
 def cyclospectrum(peptide):
+    amino_acid_mass_table = _get_amino_acid_mass_table()
+    return _cyclospectrum(amino_acid_mass_table, peptide)
+
+
+def _cyclospectrum(amino_acid_mass_table, peptide):
     sub_peptides = [['',0]]
     for l in range(len(peptide))[1:]:
         for pos in range(len(peptide)):
@@ -63,7 +70,6 @@ def cyclospectrum(peptide):
     if (peptide):
         sub_peptides.append([peptide,0])
 
-    amino_acid_mass_table = _get_amino_acid_mass_table()
     for entry in sub_peptides:
         entry[1] = _get_peptide_mass(amino_acid_mass_table, entry[0])
     return sorted(sub_peptides, key=lambda entry: entry[1])
@@ -106,13 +112,12 @@ def _count_sub_peptide_with_given_mass(amino_acid_mass_table, m):
             sum += _count_sub_peptide_with_given_mass(amino_acid_mass_table, mass - amino_acid_mass)
     return sum
     """
-    peptide_masses = [57, 71, 87, 97, 99, 101, 103, 113, 114, 115, 128, 129, 131, 137, 147, 156, 163, 186]
     masses = [0] * (m+1)
     masses[0] = 1
     for i in range(m+1):
-        for j in range(len(peptide_masses)):
-            if i >= peptide_masses[j]:
-                masses[i] += masses[i-peptide_masses[j]]
+        for j in range(len(AMINO_ACID_MASSES)):
+            if i >= AMINO_ACID_MASSES[j]:
+                masses[i] += masses[i-AMINO_ACID_MASSES[j]]
     return masses[m]
 
 
@@ -125,3 +130,46 @@ def _count_sequence_of_sub_peptide_with_given_mass_by_brutal_force(amino_acid_ma
         elif m > amino_acid_mass:
             sum += _count_sub_peptide_with_given_mass(amino_acid_mass_table, mass - amino_acid_mass)
     return sum
+
+
+"""
+    CyclopeptideSequencing(Spectrum)
+        Peptides ← a set containing only the empty peptide
+        while Peptides is nonempty
+            Peptides ← Expand(Peptides)
+            for each peptide Peptide in Peptides
+                if Mass(Peptide) = ParentMass(Spectrum)
+                    if Cyclospectrum(Peptide) = Spectrum
+                        output Peptide
+                    remove Peptide from Peptides
+                else if Peptide is not consistent with Spectrum
+                    remove Peptide from Peptides
+    - Cyclospectrum(Peptide): https://stepik.org/lesson/Sequencing-Antibiotics-by-Shattering-Them-into-Pieces-98/step/4?course=Stepic-Interactive-Text-for-Week-3&unit=8263
+    - Mass(Peptide): the total mass of an amino acid string Peptide
+    - ParentMass(Spectrum): equal to the largest mass in Spectrum
+"""
+def cyclopeptide_sequencing(spectrum):
+    spectrum = [int(amino) for amino in spectrum.split(' ')]
+    sequences = []
+    candidates = ['']
+    amino_acid_mass_table = _get_amino_acid_mass_table()
+    spectrum_set = set(spectrum)
+    while candidates:
+        peptides = _expand(candidates, amino_acid_mass_table)
+        candidates = list(peptides)
+        for peptide in peptides:
+            mass = _get_peptide_mass(amino_acid_mass_table, peptide)
+            parent_mass = spectrum[-1]
+            cs = [entry[1] for entry in cyclospectrum(peptide)]
+            if mass == parent_mass:
+                if cs == spectrum:
+                    sequences.append([amino_acid_mass_table[amino_acid] for amino_acid in peptide])
+                candidates.remove(peptide)
+            elif cs[-1] > spectrum[-1] or not set(cs).issubset(spectrum_set):
+                candidates.remove(peptide)
+    return sequences
+
+
+def _expand(peptides, amino_acid_mass_table):
+    return [peptide + amino_acid for amino_acid in amino_acid_mass_table.keys() for peptide in peptides]
+
