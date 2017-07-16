@@ -51,3 +51,12 @@ class TestTheoreticalSpectrum(unittest.TestCase):
 
     def test_extra_dataset(self):
         self._test('DataSets\TheoreticalSpectrum\extra.txt')
+
+
+class TestPeptideWithGivenMass(unittest.TestCase):
+
+    def test_sample_dataset(self):
+        self.assertEqual(14712706211, count_peptide_with_given_mass(1024))
+
+    def test_extra_dataset(self):
+        self.assertEqual(34544458837656, count_peptide_with_given_mass(1307))
