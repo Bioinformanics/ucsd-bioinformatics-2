@@ -75,6 +75,21 @@ def _cyclospectrum(amino_acid_mass_table, peptide):
     return sorted(sub_peptides, key=lambda entry: entry[1])
 
 
+def linearspectrum(peptide):
+    amino_acid_mass_table = _get_amino_acid_mass_table()
+    sub_peptides = [['',0]]
+    for l in range(len(peptide))[1:]:
+        for pos in range(len(peptide)):
+            if pos + l <= len(peptide):
+                sub_peptide = peptide[pos:pos+l]
+                sub_peptides.append([sub_peptide,0])
+    if (peptide):
+        sub_peptides.append([peptide,0])
+
+    for entry in sub_peptides:
+        entry[1] = _get_peptide_mass(amino_acid_mass_table, entry[0])
+    return sorted(sub_peptides, key=lambda entry: entry[1])
+
 def _get_peptide_mass(amino_acid_mass_table, peptide):
     mass = 0
     for pos in range(len(peptide)):
@@ -148,7 +163,7 @@ def _count_sequence_of_sub_peptide_with_given_mass_by_brutal_force(amino_acid_ma
     - Mass(Peptide): the total mass of an amino acid string Peptide
     - ParentMass(Spectrum): equal to the largest mass in Spectrum
 """
-def cyclopeptide_sequencing(spectrum):
+def cyclopeptide_sequencing_v1(spectrum):
     spectrum = [int(amino) for amino in spectrum.split(' ')]
     sequences = []
     candidates = ['']
@@ -173,3 +188,55 @@ def cyclopeptide_sequencing(spectrum):
 def _expand(peptides, amino_acid_mass_table):
     return [peptide + amino_acid for amino_acid in amino_acid_mass_table.keys() for peptide in peptides]
 
+
+"""
+Version 2 of cyclopeptide_sequencing which iterates amino acid mass list instead of amino acid list
+"""
+def cyclopeptide_sequencing(spectrum):
+    spectrum = [int(amino) for amino in spectrum.split(' ')]
+    sequences = []
+    candidate_peptides = [[]]
+    spectrum_set = set(spectrum)
+    while candidate_peptides:
+        #peptides = [peptide.append(aa_mass) for aa_mass in AMINO_ACID_MASSES for peptide in candidate_peptides]
+        peptides = []
+        for peptide in candidate_peptides:
+            for aa_mass in AMINO_ACID_MASSES:
+                if aa_mass not in spectrum_set:
+                    continue
+                candidate = list(peptide)
+                candidate.append(aa_mass)
+                peptides.append(candidate)
+        candidate_peptides = list(peptides)
+        for peptide in peptides:
+            if not peptide:
+                candidate_peptides.remove(peptide)
+            mass = sum(peptide)
+            parent_mass = spectrum[-1]
+            if mass == parent_mass:
+                cs = _cyclospectrum_mass(peptide)
+                if cs == spectrum:
+                    sequences.append(peptide)
+                candidate_peptides.remove(peptide)
+            else:
+                cs = _cyclospectrum_mass(peptide)
+                if cs[-1] > spectrum[-1]:
+                    candidate_peptides.remove(peptide)
+                else:
+                    cs_set = set(cs)
+                    if (not cs_set.issubset(spectrum_set)):
+                        candidate_peptides.remove(peptide)
+    return sequences
+
+def _cyclospectrum_mass(peptide):
+    spectrum = [0]
+    for l in range(len(peptide))[1:]: #exclude length 0
+        for pos in range(len(peptide)):
+            sub_peptide = peptide[pos:pos+l] if pos+l<=len(peptide) else peptide[pos:]+peptide[:pos+l-len(peptide)]
+            spectrum.append(sum(sub_peptide))
+            #if pos + l <= len(peptide):
+            #    sub_peptide = peptide[pos:pos + l]
+            #    spectrum.append(sum(sub_peptide))
+    if (peptide):
+        spectrum.append(sum(peptide))
+    return sorted(spectrum)
