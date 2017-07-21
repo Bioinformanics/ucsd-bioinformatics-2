@@ -219,6 +219,7 @@ def cyclopeptide_sequencing(spectrum):
                     sequences.append(peptide)
                 candidate_peptides.remove(peptide)
             else:
+                #TODO: should use linearspectrum() here
                 cs = _cyclospectrum_mass(peptide)
                 if cs[-1] > spectrum[-1]:
                     candidate_peptides.remove(peptide)
