@@ -56,7 +56,7 @@ def find_peptide_encoding(dna, peptide):
      Input: An amino acid string Peptide.
      Output: Cyclospectrum(Peptide).
 """
-def cyclospectrum(peptide):
+def cyclospectrum_v1(peptide):
     amino_acid_mass_table = _get_amino_acid_mass_table()
     return _cyclospectrum(amino_acid_mass_table, peptide)
 
@@ -74,6 +74,38 @@ def _cyclospectrum(amino_acid_mass_table, peptide):
         entry[1] = _get_peptide_mass(amino_acid_mass_table, entry[0])
     return sorted(sub_peptides, key=lambda entry: entry[1])
 
+amino_acid_mass_table = {'G':57,'A':71,'S':87,'P':97,'V':99,'T':101,'C':103,'I':113,'L':113,'N':114,'D':115,'K':128,'Q':128,'E':129,'M':131,'H':137,'F':147,'R':156,'Y':163,'W':186}
+def cyclospectrum(peptide):
+    prefix_mass = [0]
+    for i in range(len(peptide)):
+        prefix_mass.append(prefix_mass[i]+amino_acid_mass_table[peptide[i]])
+
+    theoretical_spectrum = [0]
+    for i in range(len(prefix_mass)-1):
+        for j in range(i+1, len(prefix_mass)):
+            theoretical_spectrum.append(prefix_mass[j]-prefix_mass[i])
+            if i > 0 and j < len(prefix_mass)-1:
+                theoretical_spectrum.append(prefix_mass[-1] - (prefix_mass[j] - prefix_mass[i]))
+    return sorted(theoretical_spectrum)
+
+def test_cyclospectrum_dynamic_programming(peptide):
+    import re
+    prefix_mass = []
+    for i in range(len(peptide)):
+        prefix_mass.append(peptide[:i])
+
+    theoretical_spectrum = []
+    for i in range(len(prefix_mass)-1):
+        for j in range(i+1, len(prefix_mass)):
+            sub = re.sub(prefix_mass[i], '', prefix_mass[j])
+            theoretical_spectrum.append(sub)
+            #if i+j>len(prefix_mass):
+            #    theoretical_spectrum.append(prefix_mass[j]-prefix_mass[i]+prefix_mass[j-i+1])
+            if i > 0 and j < len(prefix_mass)-1:
+                theoretical_spectrum.append(re.sub(sub, '', prefix_mass[-1]))
+    print(theoretical_spectrum)
+
+test("abcd")
 
 def linearspectrum(peptide):
     amino_acid_mass_table = _get_amino_acid_mass_table()

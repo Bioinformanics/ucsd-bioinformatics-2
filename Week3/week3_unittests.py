@@ -36,6 +36,23 @@ class TestPeptideEncoding(unittest.TestCase):
         self._test('DataSets\PeptideEncoding\extra.txt')
 
 
+class TestTheoreticalSpectrumV1(unittest.TestCase):
+
+    def _test(self, data_file_path):
+        with open(data_file_path, 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+            peptide = lines[1]
+            expected = lines[3]
+        actual = ' '.join([str(entry[1]) for entry in cyclospectrum_v1(peptide)])
+        self.assertTrue(AreStringListsEqual(expected, actual))
+
+    def test_sample_dataset(self):
+        self._test('DataSets\TheoreticalSpectrum\sample.txt')
+
+    def test_extra_dataset(self):
+        self._test('DataSets\TheoreticalSpectrum\extra.txt')
+
+
 class TestTheoreticalSpectrum(unittest.TestCase):
 
     def _test(self, data_file_path):
@@ -43,7 +60,7 @@ class TestTheoreticalSpectrum(unittest.TestCase):
             lines = [line.strip() for line in datafile.readlines()]
             peptide = lines[1]
             expected = lines[3]
-        actual = ' '.join([str(entry[1]) for entry in cyclospectrum(peptide)])
+        actual = ' '.join([str(mass) for mass in cyclospectrum(peptide)])
         self.assertTrue(AreStringListsEqual(expected, actual))
 
     def test_sample_dataset(self):
