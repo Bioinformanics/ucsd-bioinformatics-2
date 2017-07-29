@@ -3,6 +3,7 @@ from utilities import AreStringListsEqual
 from Week4.CyclopeptideScoringProblem import score
 from Week4.LeaderboardCyclopeptideSequencing import *
 from Week4.SpectralConvolutionProblem import spectral_convolution
+from Week4.ConvolutionCyclopeptideSequencing import convolution_cyclopeptide_sequencing
 
 
 class TestCyclopeptideScoring(unittest.TestCase):
@@ -71,3 +72,21 @@ class TestSpectralConvolution(unittest.TestCase):
 
     def test_extra_dataset(self):
         self._test('DataSets\SpectralConvolution\extra.txt')
+
+
+class TestConvolutionCyclopeptideSequencing(unittest.TestCase):
+    def _test(self, data_file_path):
+        with open(data_file_path, 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+            m = int(lines[1])
+            n = int(lines[2])
+            spectrum = [int(mass) for mass in lines[3].split(' ')]
+            expected = lines[5].split('-')
+        actual = [str(mass) for mass in convolution_cyclopeptide_sequencing(m, n, spectrum)]
+        self.assertTrue(AreStringListsEqual(expected, actual))
+
+    def test_sample_dataset(self):
+        self._test('DataSets\ConvolutionCyclopeptideSequencing\sample.txt')
+
+    def test_extra_dataset(self):
+        self._test('DataSets\ConvolutionCyclopeptideSequencing\extra.txt')
