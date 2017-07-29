@@ -132,4 +132,68 @@ def quiz():
     print('-'.join([str(mass) for mass in convolution_cyclopeptide_sequencing(m, n, spectrum)]))
 
 
+
+def _linear_score(peptide, spectrum):
+    ls = _linear_spectrum(peptide)
+    cs = spectrum.copy()
+    score = 0
+    for c in ls:
+        if c in cs:
+            score += 1
+            cs.remove(c)
+    return score
+
+
+def _most_k_leaderboard_cyclopeptide_sequencing(spectrum, n, amino_acid_mass_list, k):
+    leaderboard = [[]]
+    leader_peptides = []
+    while leaderboard:
+        leaderboard = _expand(leaderboard, amino_acid_mass_list)
+        loop = list(leaderboard)
+        for peptide in loop:
+            mass = sum(peptide)
+            parent_mass = _get_parent_mass(spectrum)
+            if mass == parent_mass:
+                score = _linear_score(peptide, spectrum)
+                leader_peptides = _insert(leader_peptides, peptide, score, k)
+            elif mass > parent_mass:
+                leaderboard.remove(peptide)
+        leaderboard = trim(leaderboard, spectrum, n)
+    return [entry[0] for entry in leader_peptides]
+
+
+def _insert(leader_peptides, peptide, score, k):
+    if len(leader_peptides) > k:
+        if score > leader_peptides[-1][1]:
+            leader_peptides = leader_peptides[:k-1]
+            leader_peptides.append((peptide, score))
+            leader_peptides = sorted(leader_peptides, key=lambda entry: entry[1], reverse=True)
+    else:
+        leader_peptides.append((peptide, score))
+        leader_peptides = sorted(leader_peptides, key=lambda entry: entry[1], reverse=True)
+    return leader_peptides
+
+
+def most_k_convolution_cyclopeptide_sequencing(m, n, spectrum, k):
+    spectrum = sorted(spectrum)
+    convolution_dict = _get_spectral_convolution_dict(spectrum)
+    top_m_amino_acid_mass = _get_top_m_elements(convolution_dict, m)
+    return _most_k_leaderboard_cyclopeptide_sequencing(spectrum, n, top_m_amino_acid_mass, k)
+
+
+def most_k_quiz():
+    with open('DataSets\ConvolutionCyclopeptideSequencing\most_k_quiz.txt', 'r') as datafile:
+        lines = [line.strip() for line in datafile.readlines()]
+        m = int(lines[0])
+        n = int(lines[1])
+        spectrum = [int(mass) for mass in lines[2].split(' ')]
+    leader_peptides = most_k_convolution_cyclopeptide_sequencing(m, n, spectrum, 86)
+    leader_peptides_print = []
+    for peptide in leader_peptides:
+        leader_peptides_print.append('-'.join([str(mass) for mass in peptide]))
+    print(' '.join(leader_peptides_print))
+
+
 #quiz()
+most_k_quiz()
+
