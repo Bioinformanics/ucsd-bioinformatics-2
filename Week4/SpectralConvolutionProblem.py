@@ -22,3 +22,13 @@ def spectral_convolution(spectrum):
         for k in range(convolution_dict[mass]):
             convolution.append(mass)
     return convolution
+
+
+def spectral_convolution_quiz():
+    with open('DataSets\SpectralConvolution\quiz.txt', 'r') as datafile:
+        lines = [line.strip() for line in datafile.readlines()]
+        spectrum = [int(mass) for mass in lines[0].split(' ')]
+    print(' '.join([str(mass) for mass in spectral_convolution(spectrum)]))
+
+
+#spectral_convolution_quiz()

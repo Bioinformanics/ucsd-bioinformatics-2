@@ -1,8 +1,9 @@
 import unittest
 from utilities import AreStringListsEqual
 from Week4.CyclopeptideScoringProblem import score
-from Week4.LeaderboardCyclopeptideSequencing import leaderboard_cyclopeptide, trim
+from Week4.LeaderboardCyclopeptideSequencing import *
 from Week4.SpectralConvolutionProblem import spectral_convolution
+
 
 class TestCyclopeptideScoring(unittest.TestCase):
     def _test(self, data_file_path):
@@ -61,8 +62,8 @@ class TestSpectralConvolution(unittest.TestCase):
         with open(data_file_path, 'r') as datafile:
             lines = [line.strip() for line in datafile.readlines()]
             spectrum = [int(mass) for mass in lines[1].split(' ')]
-            expected = [int(mass) for mass in lines[3].split(' ')]
-        actual = spectral_convolution(spectrum).split(' ')
+            expected = lines[3].split(' ')
+        actual = [str(mass) for mass in spectral_convolution(spectrum)]
         self.assertTrue(AreStringListsEqual(expected, actual))
 
     def test_sample_dataset(self):

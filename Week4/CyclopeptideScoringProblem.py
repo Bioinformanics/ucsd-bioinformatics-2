@@ -39,4 +39,4 @@ def quiz():
     print(score(peptide, spectrum))
 
 
-quiz()
+#quiz()
