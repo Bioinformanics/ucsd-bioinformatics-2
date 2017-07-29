@@ -1,0 +1,4 @@
+Sample Input:
+0 137 186 323
+Sample Output:
+137 137 186 186 323 49

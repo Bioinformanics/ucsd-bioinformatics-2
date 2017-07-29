@@ -1,1 +1,1 @@
-from Week4.cyclopeptide_scoring_problem import *
+from Week4.CyclopeptideScoringProblem import *
