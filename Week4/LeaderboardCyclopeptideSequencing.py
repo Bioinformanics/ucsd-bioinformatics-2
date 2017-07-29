@@ -41,10 +41,21 @@ def linear_spectrum(peptide):
     return sorted(theoretical_spectrum)
 
 
-def _linear_score(peptide, spectrum):
+def _linear_score_slow(peptide, spectrum):
     theoretical_spectrum = linear_spectrum(peptide)
     all = set(theoretical_spectrum).union(set(spectrum))
     return sum([min(theoretical_spectrum.count(mass), spectrum.count(mass)) for mass in all])
+
+
+def _linear_score(peptide, spectrum):
+    ls = linear_spectrum(peptide)
+    cs = spectrum.copy()
+    score = 0
+    for c in ls:
+        if c in cs:
+            score += 1
+            cs.remove(c)
+    return score
 
 
 #peptide = 'ITCHRTLHFWCRCFLLDKEYYLKSDWIIKWRGLWIV'
@@ -100,3 +111,24 @@ def leaderboard_cyclopeptide_sequencing(spectrum, n):
 def leaderboard_cyclopeptide(spectrum, n):
     leader_peptide = leaderboard_cyclopeptide_sequencing(spectrum, n)
     return [amino_acid_mass_table[amino_acid] for amino_acid in leader_peptide]
+
+
+def trim_peptide_leaderboard_quiz():
+    with open('DataSets\TrimPeptideLeaderboard\quiz.txt', 'r') as datafile:
+        lines = [line.strip() for line in datafile.readlines()]
+        leaderboard = lines[0].split(' ')
+        spectrum = [int(mass) for mass in lines[1].split(' ')]
+        n = int(lines[2])
+    print(' '.join(trim(leaderboard, spectrum, n)))
+
+
+def leaderboard_cyclopeptide_sequencing_quiz():
+    with open('DataSets\LeaderboardCyclopeptideSequencing\quiz.txt', 'r') as datafile:
+        lines = [line.strip() for line in datafile.readlines()]
+        n = int(lines[0])
+        spectrum = [int(mass) for mass in lines[1].split(' ')]
+    print('-'.join([str(mass) for mass in leaderboard_cyclopeptide(spectrum, n)]))
+
+
+#trim_peptide_leaderboard_quiz()
+leaderboard_cyclopeptide_sequencing_quiz()
