@@ -1,5 +1,7 @@
 import unittest
-from Week4.cyclopeptide_scoring_problem import *
+from utilities import AreStringListsEqual
+from Week4.cyclopeptide_scoring_problem import score
+from Week4.LeaderboardCyclopeptideSequencing import leaderboard_cyclopeptide_sequencing, leaderboard_cyclopeptide, trim
 
 class TestCyclopeptideScoring(unittest.TestCase):
     def _test(self, data_file_path):
@@ -16,3 +18,38 @@ class TestCyclopeptideScoring(unittest.TestCase):
 
     def test_extra_dataset(self):
         self._test('DataSets\CyclopeptideScoring\extra.txt')
+
+
+class TestLeaderboardCyclopeptideSequencing(unittest.TestCase):
+    def _test(self, data_file_path):
+        with open(data_file_path, 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+            n = int(lines[1])
+            spectrum = [int(mass) for mass in lines[2].split(' ')]
+            expected = lines[4].split('-')
+        actual = [str(mass) for mass in leaderboard_cyclopeptide(spectrum, n)]
+        self.assertTrue(AreStringListsEqual(expected, actual))
+
+    def test_sample_dataset(self):
+        self._test('DataSets\LeaderboardCyclopeptideSequencing\sample.txt')
+
+    def test_extra_dataset(self):
+        self._test('DataSets\LeaderboardCyclopeptideSequencing\extra.txt')
+
+
+class TestTrimLeaderboard(unittest.TestCase):
+    def _test(self, data_file_path):
+        with open(data_file_path, 'r') as datafile:
+            lines = [line.strip() for line in datafile.readlines()]
+            leaderboard = lines[1].split(' ')
+            spectrum = [int(mass) for mass in lines[2].split(' ')]
+            n = int(lines[3])
+            expected = lines[5].split(' ')
+        actual = trim(leaderboard, spectrum, n)
+        self.assertTrue(AreStringListsEqual(expected, actual))
+
+    def test_sample_dataset(self):
+        self._test('DataSets\TrimPeptideLeaderboard\sample.txt')
+
+    def test_extra_dataset(self):
+        self._test('DataSets\TrimPeptideLeaderboard\extra.txt')
